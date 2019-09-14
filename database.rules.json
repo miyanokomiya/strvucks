@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "env": {
+      ".read": false,
+      ".write": false
+    },
+    "users": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
