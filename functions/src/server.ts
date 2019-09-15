@@ -16,8 +16,10 @@ app.use(bodyParser.json())
 const db = admin.database()
 const auth = admin.auth()
 
-// const webHost = 'https://strvucks.firebaseapp.com'
-const webHost = 'http://localhost:1234'
+const webHost =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:1234'
+    : 'https://strvucks.firebaseapp.com'
 
 const getTokenData = async (code: string): Promise<TokenData> => {
   const paramSnap = await db.ref('env/oauth').once('value')
@@ -36,7 +38,9 @@ app.get('/oauth_success', async (req, res) => {
   const code = req.query.code
   try {
     const stravaTokenData = await getTokenData(code)
-    const token = await auth.createCustomToken(String(stravaTokenData.athlete.id))
+    const token = await auth.createCustomToken(
+      String(stravaTokenData.athlete.id)
+    )
     res.redirect(webHost + '/signin-callback.html?token=' + token)
   } catch (e) {
     console.error(e)
@@ -44,35 +48,31 @@ app.get('/oauth_success', async (req, res) => {
   }
 })
 
-// Creates the endpoint for our webhook
 app.post('/webhook', async (req, res) => {
   const data = req.body as WebhookData
   if (data.object_type === 'activity') {
     await db.ref('webhooks').push(data)
   }
   res.status(200).send('EVENT_RECEIVED')
+  return Promise.resolve()
 })
 
-// Adds support for GET requests to our webhook
-app.get('/webhook', (req, res) => {
-  // Your verify token. Should be a random string.
-  const VERIFY_TOKEN = 'STRAVA'
-  // Parses the query params
+// https://developers.strava.com/docs/webhooks/
+app.get('/webhook', async (req, res) => {
+  const paramSnap = await db.ref('env/oauth').once('value')
+  const VERIFY_TOKEN = paramSnap.val().VERIFY_TOKEN
   const mode = req.query['hub.mode']
   const token = req.query['hub.verify_token']
   const challenge = req.query['hub.challenge']
-  // Checks if a token and mode is in the query string of the request
   if (mode && token) {
-    // Verifies that the mode and token sent are valid
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-      // Responds with the challenge token from the request
       console.log('WEBHOOK_VERIFIED')
       res.json({ 'hub.challenge': challenge })
     } else {
-      // Responds with '403 Forbidden' if verify tokens do not match
       res.sendStatus(403)
     }
   }
+  return Promise.resolve()
 })
 
 export default app

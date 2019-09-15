@@ -32,7 +32,7 @@ const getActivity = async (
 
 export const onCreateWebhook = functions.database
   .ref('/webhooks')
-  .onCreate(async (snapshot: any) => {
+  .onCreate(async snapshot => {
     const data = snapshot.val() as WebhookData
     const userSnap = await db.ref(`users/${data.owner_id}`).once('value')
     const user = userSnap.val() as TokenData
@@ -40,5 +40,6 @@ export const onCreateWebhook = functions.database
     await refreshTokenData(user.refresh_token)
 
     const activity = await getActivity(data.object_id, user.access_token)
-    await db.ref(`activities/${activity.id}`).set(activity)
+    await db.ref(`activities/${user.athlete.id}/${activity.id}`).set(activity)
+    await db.ref(`webhooks/${snapshot.key}`).remove()
   })

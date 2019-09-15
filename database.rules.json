@@ -9,8 +9,10 @@
       ".write": false
     },
     "activities": {
-      ".read": false,
-      ".write": false
+      "$userId": {
+        ".read": "auth.uid == $userId",
+        ".write": "auth.uid == $userId"
+      }
     },
     "users": {
       ".read": true,

@@ -2,7 +2,7 @@
   "name": "functions",
   "scripts": {
     "build": "rm -rf lib && tsc",
-    "serve": "npm run build && firebase serve --only functions",
+    "serve": "NODE_ENV=development npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",

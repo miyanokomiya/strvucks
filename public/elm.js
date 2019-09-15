@@ -4311,6 +4311,7 @@ function _Browser_load(url)
 	}));
 }
 var elm$core$Basics$False = {$: 'False'};
+var elm$core$Maybe$Nothing = {$: 'Nothing'};
 var elm$core$Basics$True = {$: 'True'};
 var elm$core$Result$isOk = function (result) {
 	if (result.$ === 'Ok') {
@@ -4573,7 +4574,6 @@ var elm$core$Array$initialize = F2(
 var elm$core$Maybe$Just = function (a) {
 	return {$: 'Just', a: a};
 };
-var elm$core$Maybe$Nothing = {$: 'Nothing'};
 var elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
@@ -4787,29 +4787,151 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 	});
 var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
-var author$project$Main$init = function (athlete) {
+var author$project$Main$init = function (_n0) {
 	return _Utils_Tuple2(
-		{athlete: athlete},
+		{activities: _List_Nil, athlete: elm$core$Maybe$Nothing, ready: false},
 		elm$core$Platform$Cmd$none);
 };
+var author$project$Main$SetActivities = function (a) {
+	return {$: 'SetActivities', a: a};
+};
+var author$project$Main$SetAthlete = function (a) {
+	return {$: 'SetAthlete', a: a};
+};
+var elm$json$Json$Decode$andThen = _Json_andThen;
+var elm$json$Json$Decode$field = _Json_decodeField;
+var elm$json$Json$Decode$float = _Json_decodeFloat;
+var elm$json$Json$Decode$int = _Json_decodeInt;
+var elm$json$Json$Decode$list = _Json_decodeList;
+var elm$json$Json$Decode$string = _Json_decodeString;
+var elm$json$Json$Decode$succeed = _Json_succeed;
+var author$project$Main$setActivities = _Platform_incomingPort(
+	'setActivities',
+	elm$json$Json$Decode$list(
+		A2(
+			elm$json$Json$Decode$andThen,
+			function (type_) {
+				return A2(
+					elm$json$Json$Decode$andThen,
+					function (total_elevation_gain) {
+						return A2(
+							elm$json$Json$Decode$andThen,
+							function (start_date_local) {
+								return A2(
+									elm$json$Json$Decode$andThen,
+									function (name) {
+										return A2(
+											elm$json$Json$Decode$andThen,
+											function (moving_time) {
+												return A2(
+													elm$json$Json$Decode$andThen,
+													function (max_speed) {
+														return A2(
+															elm$json$Json$Decode$andThen,
+															function (max_heartrate) {
+																return A2(
+																	elm$json$Json$Decode$andThen,
+																	function (id) {
+																		return A2(
+																			elm$json$Json$Decode$andThen,
+																			function (elapsed_time) {
+																				return A2(
+																					elm$json$Json$Decode$andThen,
+																					function (distance) {
+																						return A2(
+																							elm$json$Json$Decode$andThen,
+																							function (average_speed) {
+																								return A2(
+																									elm$json$Json$Decode$andThen,
+																									function (average_heartrate) {
+																										return A2(
+																											elm$json$Json$Decode$andThen,
+																											function (average_cadence) {
+																												return elm$json$Json$Decode$succeed(
+																													{average_cadence: average_cadence, average_heartrate: average_heartrate, average_speed: average_speed, distance: distance, elapsed_time: elapsed_time, id: id, max_heartrate: max_heartrate, max_speed: max_speed, moving_time: moving_time, name: name, start_date_local: start_date_local, total_elevation_gain: total_elevation_gain, type_: type_});
+																											},
+																											A2(elm$json$Json$Decode$field, 'average_cadence', elm$json$Json$Decode$float));
+																									},
+																									A2(elm$json$Json$Decode$field, 'average_heartrate', elm$json$Json$Decode$float));
+																							},
+																							A2(elm$json$Json$Decode$field, 'average_speed', elm$json$Json$Decode$float));
+																					},
+																					A2(elm$json$Json$Decode$field, 'distance', elm$json$Json$Decode$float));
+																			},
+																			A2(elm$json$Json$Decode$field, 'elapsed_time', elm$json$Json$Decode$float));
+																	},
+																	A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
+															},
+															A2(elm$json$Json$Decode$field, 'max_heartrate', elm$json$Json$Decode$float));
+													},
+													A2(elm$json$Json$Decode$field, 'max_speed', elm$json$Json$Decode$float));
+											},
+											A2(elm$json$Json$Decode$field, 'moving_time', elm$json$Json$Decode$float));
+									},
+									A2(elm$json$Json$Decode$field, 'name', elm$json$Json$Decode$string));
+							},
+							A2(elm$json$Json$Decode$field, 'start_date_local', elm$json$Json$Decode$string));
+					},
+					A2(elm$json$Json$Decode$field, 'total_elevation_gain', elm$json$Json$Decode$float));
+			},
+			A2(elm$json$Json$Decode$field, 'type_', elm$json$Json$Decode$string))));
+var elm$json$Json$Decode$map = _Json_map1;
+var elm$json$Json$Decode$null = _Json_decodeNull;
+var elm$json$Json$Decode$oneOf = _Json_oneOf;
+var author$project$Main$setAthlete = _Platform_incomingPort(
+	'setAthlete',
+	elm$json$Json$Decode$oneOf(
+		_List_fromArray(
+			[
+				elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+				A2(
+				elm$json$Json$Decode$map,
+				elm$core$Maybe$Just,
+				A2(
+					elm$json$Json$Decode$andThen,
+					function (username) {
+						return A2(
+							elm$json$Json$Decode$andThen,
+							function (id) {
+								return elm$json$Json$Decode$succeed(
+									{id: id, username: username});
+							},
+							A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
+					},
+					A2(elm$json$Json$Decode$field, 'username', elm$json$Json$Decode$string)))
+			])));
 var elm$core$Platform$Sub$batch = _Platform_batch;
-var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var author$project$Main$subscriptions = function (_n0) {
-	return elm$core$Platform$Sub$none;
+	return elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				author$project$Main$setActivities(author$project$Main$SetActivities),
+				author$project$Main$setAthlete(author$project$Main$SetAthlete)
+			]));
 };
 var author$project$Main$update = F2(
 	function (msg, model) {
-		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+		if (msg.$ === 'SetActivities') {
+			var activities = msg.a;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{activities: activities}),
+				elm$core$Platform$Cmd$none);
+		} else {
+			var athlete = msg.a;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{athlete: athlete, ready: true}),
+				elm$core$Platform$Cmd$none);
+		}
 	});
-var author$project$Strava$clientId = 38947;
-var author$project$Strava$redirectUri = 'http://localhost:5000/strvucks/us-central1/server/oauth_success';
-var author$project$Strava$oauthUrl = 'http://www.strava.com/oauth/authorize?client_id=' + (elm$core$String$fromInt(author$project$Strava$clientId) + ('&response_type=code&redirect_uri=' + (author$project$Strava$redirectUri + '&approval_prompt=force&scope=read,activity:read')));
+var elm$core$String$fromFloat = _String_fromNumber;
 var elm$core$Basics$identity = function (x) {
 	return x;
 };
-var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$map2 = _Json_map2;
-var elm$json$Json$Decode$succeed = _Json_succeed;
 var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	switch (handler.$) {
 		case 'Normal':
@@ -4822,108 +4944,55 @@ var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 			return 3;
 	}
 };
-var elm$html$Html$a = _VirtualDom_node('a');
 var elm$html$Html$div = _VirtualDom_node('div');
+var elm$html$Html$li = _VirtualDom_node('li');
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
-var elm$json$Json$Encode$string = _Json_wrap;
-var elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			elm$json$Json$Encode$string(string));
-	});
-var elm$html$Html$Attributes$href = function (url) {
-	return A2(
-		elm$html$Html$Attributes$stringProperty,
-		'href',
-		_VirtualDom_noJavaScriptUri(url));
-};
-var author$project$Main$requireAuthView = function (_n0) {
+var elm$html$Html$ul = _VirtualDom_node('ul');
+var author$project$Main$activityView = function (activity) {
 	return A2(
 		elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
 			[
 				A2(
-				elm$html$Html$a,
+				elm$html$Html$ul,
+				_List_Nil,
 				_List_fromArray(
 					[
-						elm$html$Html$Attributes$href(author$project$Strava$oauthUrl)
-					]),
-				_List_fromArray(
-					[
-						elm$html$Html$text(author$project$Strava$oauthUrl)
-					]))
-			]));
-};
-var elm$html$Html$li = _VirtualDom_node('li');
-var elm$html$Html$ul = _VirtualDom_node('ul');
-var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
-var author$project$Main$view = function (model) {
-	return A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				elm$html$Html$Attributes$id('app')
-			]),
-		_List_fromArray(
-			[
-				function () {
-				var _n0 = model.athlete;
-				if (_n0.$ === 'Nothing') {
-					return author$project$Main$requireAuthView(model);
-				} else {
-					var athlete = _n0.a;
-					return A2(
-						elm$html$Html$ul,
+						A2(
+						elm$html$Html$li,
 						_List_Nil,
 						_List_fromArray(
 							[
-								A2(
-								elm$html$Html$li,
-								_List_Nil,
-								_List_fromArray(
-									[
-										elm$html$Html$text(
-										elm$core$String$fromInt(athlete.id))
-									])),
-								A2(
-								elm$html$Html$li,
-								_List_Nil,
-								_List_fromArray(
-									[
-										elm$html$Html$text(athlete.username)
-									]))
-							]));
-				}
-			}()
+								elm$html$Html$text(activity.name)
+							])),
+						A2(
+						elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text(activity.type_)
+							])),
+						A2(
+						elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text(
+								'distance: ' + elm$core$String$fromFloat(activity.distance))
+							])),
+						A2(
+						elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text(
+								'average_speed' + elm$core$String$fromFloat(activity.average_speed))
+							]))
+					]))
 			]));
 };
-var elm$browser$Browser$External = function (a) {
-	return {$: 'External', a: a};
-};
-var elm$browser$Browser$Internal = function (a) {
-	return {$: 'Internal', a: a};
-};
-var elm$browser$Browser$Dom$NotFound = function (a) {
-	return {$: 'NotFound', a: a};
-};
-var elm$core$Basics$never = function (_n0) {
-	never:
-	while (true) {
-		var nvr = _n0.a;
-		var $temp$_n0 = nvr;
-		_n0 = $temp$_n0;
-		continue never;
-	}
-};
-var elm$core$Task$Perform = function (a) {
-	return {$: 'Perform', a: a};
-};
-var elm$core$Task$succeed = _Scheduler_succeed;
-var elm$core$Task$init = elm$core$Task$succeed(_Utils_Tuple0);
 var elm$core$List$foldrHelper = F4(
 	function (fn, acc, ctr, ls) {
 		if (!ls.b) {
@@ -4993,6 +5062,157 @@ var elm$core$List$map = F2(
 			_List_Nil,
 			xs);
 	});
+var author$project$Main$activitiesView = function (activities) {
+	return A2(
+		elm$html$Html$ul,
+		_List_Nil,
+		A2(
+			elm$core$List$map,
+			function (a) {
+				return A2(
+					elm$html$Html$li,
+					_List_Nil,
+					_List_fromArray(
+						[
+							author$project$Main$activityView(a)
+						]));
+			},
+			activities));
+};
+var author$project$Strava$clientId = 38947;
+var author$project$Strava$redirectUri = 'http://localhost:5000/strvucks/us-central1/server/oauth_success';
+var author$project$Strava$oauthUrl = 'http://www.strava.com/oauth/authorize?client_id=' + (elm$core$String$fromInt(author$project$Strava$clientId) + ('&response_type=code&redirect_uri=' + (author$project$Strava$redirectUri + '&approval_prompt=force&scope=read,activity:read')));
+var elm$html$Html$a = _VirtualDom_node('a');
+var elm$html$Html$p = _VirtualDom_node('p');
+var elm$json$Json$Encode$string = _Json_wrap;
+var elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			elm$json$Json$Encode$string(string));
+	});
+var elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var author$project$Main$requireAuthView = function (_n0) {
+	return A2(
+		elm$html$Html$div,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						elm$html$Html$text('Sign In Strava')
+					])),
+				A2(
+				elm$html$Html$a,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$href(author$project$Strava$oauthUrl)
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text(author$project$Strava$oauthUrl)
+					]))
+			]));
+};
+var elm$html$Html$h3 = _VirtualDom_node('h3');
+var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
+var author$project$Main$view = function (model) {
+	return A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$id('app')
+			]),
+		function () {
+			if (!model.ready) {
+				return _List_fromArray(
+					[
+						elm$html$Html$text('loading...')
+					]);
+			} else {
+				var _n0 = model.athlete;
+				if (_n0.$ === 'Nothing') {
+					return _List_fromArray(
+						[
+							author$project$Main$requireAuthView(model)
+						]);
+				} else {
+					var athlete = _n0.a;
+					return _List_fromArray(
+						[
+							A2(
+							elm$html$Html$h3,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Athlete')
+								])),
+							A2(
+							elm$html$Html$ul,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											elm$html$Html$text(
+											elm$core$String$fromInt(athlete.id))
+										])),
+									A2(
+									elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											elm$html$Html$text(athlete.username)
+										]))
+								])),
+							A2(
+							elm$html$Html$h3,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Activities')
+								])),
+							author$project$Main$activitiesView(model.activities)
+						]);
+				}
+			}
+		}());
+};
+var elm$browser$Browser$External = function (a) {
+	return {$: 'External', a: a};
+};
+var elm$browser$Browser$Internal = function (a) {
+	return {$: 'Internal', a: a};
+};
+var elm$browser$Browser$Dom$NotFound = function (a) {
+	return {$: 'NotFound', a: a};
+};
+var elm$core$Basics$never = function (_n0) {
+	never:
+	while (true) {
+		var nvr = _n0.a;
+		var $temp$_n0 = nvr;
+		_n0 = $temp$_n0;
+		continue never;
+	}
+};
+var elm$core$Task$Perform = function (a) {
+	return {$: 'Perform', a: a};
+};
+var elm$core$Task$succeed = _Scheduler_succeed;
+var elm$core$Task$init = elm$core$Task$succeed(_Utils_Tuple0);
 var elm$core$Task$andThen = _Scheduler_andThen;
 var elm$core$Task$map = F2(
 	function (func, taskA) {
@@ -5197,32 +5417,7 @@ var elm$url$Url$fromString = function (str) {
 		A2(elm$core$String$dropLeft, 8, str)) : elm$core$Maybe$Nothing);
 };
 var elm$browser$Browser$element = _Browser_element;
-var elm$json$Json$Decode$andThen = _Json_andThen;
-var elm$json$Json$Decode$field = _Json_decodeField;
-var elm$json$Json$Decode$int = _Json_decodeInt;
-var elm$json$Json$Decode$null = _Json_decodeNull;
-var elm$json$Json$Decode$oneOf = _Json_oneOf;
-var elm$json$Json$Decode$string = _Json_decodeString;
 var author$project$Main$main = elm$browser$Browser$element(
 	{init: author$project$Main$init, subscriptions: author$project$Main$subscriptions, update: author$project$Main$update, view: author$project$Main$view});
 _Platform_export({'Main':{'init':author$project$Main$main(
-	elm$json$Json$Decode$oneOf(
-		_List_fromArray(
-			[
-				elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
-				A2(
-				elm$json$Json$Decode$map,
-				elm$core$Maybe$Just,
-				A2(
-					elm$json$Json$Decode$andThen,
-					function (username) {
-						return A2(
-							elm$json$Json$Decode$andThen,
-							function (id) {
-								return elm$json$Json$Decode$succeed(
-									{id: id, username: username});
-							},
-							A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
-					},
-					A2(elm$json$Json$Decode$field, 'username', elm$json$Json$Decode$string)))
-			])))(0)}});}(this));
+	elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
