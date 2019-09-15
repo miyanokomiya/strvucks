@@ -62,4 +62,5 @@ typings/
 
 elm-stuff
 dist
+public/elm.js
 .cache
