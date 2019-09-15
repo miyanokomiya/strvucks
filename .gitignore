@@ -61,4 +61,5 @@ typings/
 .next
 
 elm-stuff
-dist/elm.js
+dist
+.cache

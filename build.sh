@@ -1,1 +1,1 @@
-elm make src/Main.elm --output=dist/elm.js
+elm make src/Main.elm --output=public/elm.js

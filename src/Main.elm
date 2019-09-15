@@ -22,13 +22,20 @@ routeParser =
         ]
 
 
+type alias Athlete =
+    { id : Int
+    , username : String
+    }
+
+
 type alias Model =
-    {}
+    { athlete : Maybe Athlete }
 
 
-init : Int -> ( Model, Cmd Msg )
-init _ =
-    ( {}
+init : Maybe Athlete -> ( Model, Cmd Msg )
+init athlete =
+    ( { athlete = athlete
+      }
     , Cmd.none
     )
 
@@ -61,10 +68,23 @@ subscriptions _ =
 -- VIEW
 
 
+requireAuthView : Model -> Html Msg
+requireAuthView _ =
+    div [] [ a [ href oauthUrl ] [ text oauthUrl ] ]
+
+
 view : Model -> Html Msg
 view model =
     div [ id "app" ]
-        [ a [ href oauthUrl ] [ text oauthUrl ]
+        [ case model.athlete of
+            Nothing ->
+                requireAuthView model
+
+            Just athlete ->
+                ul []
+                    [ li [] [ text (String.fromInt athlete.id) ]
+                    , li [] [ text athlete.username ]
+                    ]
         ]
 
 
@@ -72,7 +92,7 @@ view model =
 -- INIT
 
 
-main : Program Int Model Msg
+main : Program (Maybe Athlete) Model Msg
 main =
     Browser.element
         { init = init

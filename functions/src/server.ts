@@ -1,19 +1,32 @@
-import * as express from 'express'
+import express from 'express'
 import * as admin from 'firebase-admin'
+
 import axios from 'axios'
-admin.initializeApp()
+
+admin.initializeApp({
+  // export GOOGLE_APPLICATION_CREDENTIALS=[full-path-to-service.json]
+  credential: admin.credential.applicationDefault(),
+  databaseURL: 'https://strvucks.firebaseio.com'
+})
 
 const app = express()
 const db = admin.database()
+const auth = admin.auth()
 
 // const webHost = 'https://strvucks.firebaseapp.com'
-const webHost = 'http://localhost:8000'
+const webHost = 'http://localhost:1234'
 
 interface TokenData {
   token_type: string
   access_token: string
   refresh_token: string
   expires_at: number
+  athlete: Athlete
+}
+
+interface Athlete {
+  id: number
+  username: string
 }
 
 const getTokenData = async (code: string): Promise<TokenData> => {
@@ -26,25 +39,17 @@ const getTokenData = async (code: string): Promise<TokenData> => {
   return tokenRes.data
 }
 
-// const refreshTokenData = async (refresh_token: string): Promise<TokenData> => {
-//   const paramSnap = await db.ref('env/oauth').once('value')
-//   const tokenRes = await axios.post('https://www.strava.com/oauth/token', {
-//     ...paramSnap.val(),
-//     refresh_token,
-//     grant_type: 'refresh_token'
-//   })
-//   return tokenRes.data
-// }
-
 app.get('/oauth_success', async (req, res) => {
   const code = req.query.code
   try {
-    const tokeData = await getTokenData(code)
-    await db.ref('users/1').set(tokeData)
-    res.redirect(webHost + '/')
+    const stravaTokenData = await getTokenData(code)
+    const uid = stravaTokenData.athlete.id
+    const token = await auth.createCustomToken(String(uid))
+    await db.ref(`users/${uid}`).set(stravaTokenData)
+    res.redirect(webHost + '/signin-callback.html?token=' + token)
   } catch (e) {
     console.error(e)
-    res.redirect(webHost + '/error')
+    res.redirect(webHost + '/index.html?error=' + e.message)
   }
 })
 

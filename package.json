@@ -1,0 +1,37 @@
+{
+  "name": "strvucks",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "start": "parcel public/index.html public/signin-callback.html",
+    "lint": "eslint --ext .ts ./public ./functions/src && prettier -c *.json ./functions/*.json",
+    "lint:fix": "eslint --fix --ext .ts ./public ./functions/src && prettier --write *.json ./functions/*.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miyanokomiya/strvucks.git"
+  },
+  "author": "miyanokomiya",
+  "bugs": {
+    "url": "https://github.com/miyanokomiya/strvucks/issues"
+  },
+  "homepage": "https://github.com/miyanokomiya/strvucks#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.2.0",
+    "@typescript-eslint/parser": "^2.2.0",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "parcel-bundler": "^1.12.3",
+    "prettier": "^1.18.2",
+    "typescript": "^3.6.3"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "dependencies": {
+    "firebase": "^6.6.1",
+    "query-string": "^6.8.3"
+  }
+}
