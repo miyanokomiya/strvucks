@@ -113,3 +113,23 @@ export interface BestEffort {
   end_index: number // 227
   pr_rank: null
 }
+
+export interface Summary {
+  weekBaseDate: number
+  monthBaseDate: number
+  weekly: SummaryItem
+  monthly: SummaryItem
+}
+
+export interface SummaryItem {
+  distance: number // 5479.2
+  moving_time: number // 1798
+  total_elevation_gain: number // 40.6
+  calories: number // 266.0
+}
+
+export interface Ifttt {
+  key: string
+  message: string
+  value: string
+}

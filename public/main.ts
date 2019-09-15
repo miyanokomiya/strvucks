@@ -16,18 +16,25 @@ firebase.auth().onAuthStateChanged(async auth => {
     try {
       const userSnap = await db.ref(`users/${auth.uid}`).once('value')
       const user = userSnap.val()
-      console.log(user)
       app.ports.setAthlete.send(user.athlete)
 
       await db.ref(`activities/${user.athlete.id}`).on('value', snap => {
         const val = snap.val()
-        console.log(val)
         const activities = Object.keys(val).map(key => ({
           ...val[key],
           type_: val[key].type
         }))
-        console.log(activities)
         app.ports.setActivities.send(activities)
+      })
+
+      const iftttRef = db.ref(`ifttt/${user.athlete.id}`)
+      await iftttRef.on('value', snap => {
+        const val = snap.val()
+        app.ports.setIfttt.send(val)
+      })
+
+      app.ports.saveIfttt.subscribe(ifttt => {
+        iftttRef.set(ifttt)
       })
     } catch (e) {
       console.error(e)

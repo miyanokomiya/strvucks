@@ -17,6 +17,18 @@
     "users": {
       ".read": true,
       ".write": true
+    },
+    "ifttt": {
+      "$userId": {
+        ".read": "auth.uid == $userId",
+        ".write": "auth.uid == $userId"
+      }
+    },
+    "summaries": {
+      "$userId": {
+        ".read": "auth.uid == $userId",
+        ".write": "auth.uid == $userId"
+      }
     }
   }
 }

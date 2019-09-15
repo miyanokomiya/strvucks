@@ -45,10 +45,18 @@ type alias Activity =
     }
 
 
+type alias Ifttt =
+    { key : String
+    , message : String
+    , value : String
+    }
+
+
 type alias Model =
     { ready : Bool
     , athlete : Maybe Athlete
     , activities : List Activity
+    , ifttt : Ifttt
     }
 
 
@@ -57,6 +65,7 @@ init _ =
     ( { ready = False
       , athlete = Nothing
       , activities = []
+      , ifttt = Ifttt "" "" ""
       }
     , Cmd.none
     )
@@ -69,6 +78,11 @@ init _ =
 type Msg
     = SetActivities (List Activity)
     | SetAthlete (Maybe Athlete)
+    | SetIfttt Ifttt
+    | SetIftttKey String
+    | SetIftttMessage String
+    | SetIftttValue String
+    | SaveIfttt
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -79,6 +93,33 @@ update msg model =
 
         SetAthlete athlete ->
             ( { model | athlete = athlete, ready = True }, Cmd.none )
+
+        SetIfttt ifttt ->
+            ( { model | ifttt = ifttt }, Cmd.none )
+
+        SetIftttKey str ->
+            let
+                ifttt =
+                    model.ifttt
+            in
+            ( { model | ifttt = { ifttt | key = str } }, Cmd.none )
+
+        SetIftttMessage str ->
+            let
+                ifttt =
+                    model.ifttt
+            in
+            ( { model | ifttt = { ifttt | message = str } }, Cmd.none )
+
+        SetIftttValue str ->
+            let
+                ifttt =
+                    model.ifttt
+            in
+            ( { model | ifttt = { ifttt | value = str } }, Cmd.none )
+
+        SaveIfttt ->
+            ( model, saveIfttt model.ifttt )
 
 
 
@@ -91,9 +132,19 @@ port setActivities : (List Activity -> msg) -> Sub msg
 port setAthlete : (Maybe Athlete -> msg) -> Sub msg
 
 
+port setIfttt : (Ifttt -> msg) -> Sub msg
+
+
+port saveIfttt : Ifttt -> Cmd msg
+
+
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Sub.batch [ setActivities SetActivities, setAthlete SetAthlete ]
+    Sub.batch
+        [ setActivities SetActivities
+        , setAthlete SetAthlete
+        , setIfttt SetIfttt
+        ]
 
 
 
@@ -102,9 +153,10 @@ subscriptions _ =
 
 requireAuthView : Model -> Html Msg
 requireAuthView _ =
-    div [] [
-      p [] [text "Sign In Strava"]
-     , a [ href oauthUrl ] [ text oauthUrl ] ]
+    div []
+        [ p [] [ text "Sign In Strava" ]
+        , a [ href oauthUrl ] [ text oauthUrl ]
+        ]
 
 
 activityView : Activity -> Html Msg
@@ -125,6 +177,28 @@ activitiesView activities =
         (List.map (\a -> li [] [ activityView a ]) activities)
 
 
+iftttView : Ifttt -> Html Msg
+iftttView ifttt =
+    div []
+        [ h3 [] [ text "IFTTT Webhook Settings" ]
+        , div []
+            [ label [] [ text "IFTTT Key" ]
+            , input [ type_ "text", value ifttt.key, onInput SetIftttKey ] []
+            ]
+        , div []
+            [ label [] [ text "IFTTT Message" ]
+            , input [ type_ "text", value ifttt.message, onInput SetIftttMessage ] []
+            ]
+        , div []
+            [ label [] [ text "IFTTT Value" ]
+            , textarea [ value ifttt.value, onInput SetIftttValue ] []
+            ]
+        , div []
+            [ button [ onClick SaveIfttt ] [ text "Save" ]
+            ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     div [ id "app" ]
@@ -142,6 +216,7 @@ view model =
                         [ li [] [ text (String.fromInt athlete.id) ]
                         , li [] [ text athlete.username ]
                         ]
+                    , iftttView model.ifttt
                     , h3 [] [ text "Activities" ]
                     , activitiesView
                         model.activities

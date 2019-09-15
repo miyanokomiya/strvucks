@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "start": "parcel public/index.html public/signin-callback.html",
-    "build": "rm -rf dist && parcel build public/index.html public/signin-callback.html",
+    "build:elm": "sh ./build.sh",
+    "start": "npm run build:elm && parcel public/index.html public/signin-callback.html",
+    "build": "npm run build:elm && rm -rf dist && parcel build public/index.html public/signin-callback.html",
     "lint": "eslint --ext .ts ./public ./functions/src && prettier -c *.json ./functions/*.json",
     "lint:fix": "eslint --fix --ext .ts ./public ./functions/src && prettier --write *.json ./functions/*.json"
   },
