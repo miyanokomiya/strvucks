@@ -4803,7 +4803,7 @@ var author$project$Main$update = F2(
 	});
 var author$project$Strava$clientId = 38947;
 var author$project$Strava$redirectUri = 'http://localhost:5000/strvucks/us-central1/server/oauth_success';
-var author$project$Strava$oauthUrl = 'http://www.strava.com/oauth/authorize?client_id=' + (elm$core$String$fromInt(author$project$Strava$clientId) + ('&response_type=code&redirect_uri=' + (author$project$Strava$redirectUri + '&approval_prompt=force&scope=read')));
+var author$project$Strava$oauthUrl = 'http://www.strava.com/oauth/authorize?client_id=' + (elm$core$String$fromInt(author$project$Strava$clientId) + ('&response_type=code&redirect_uri=' + (author$project$Strava$redirectUri + '&approval_prompt=force&scope=read,activity:read')));
 var elm$core$Basics$identity = function (x) {
 	return x;
 };

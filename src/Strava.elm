@@ -18,4 +18,4 @@ oauthUrl =
         ++ String.fromInt clientId
         ++ "&response_type=code&redirect_uri="
         ++ redirectUri
-        ++ "&approval_prompt=force&scope=read"
+        ++ "&approval_prompt=force&scope=read,activity:read"

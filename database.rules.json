@@ -4,6 +4,14 @@
       ".read": false,
       ".write": false
     },
+    "webhooks": {
+      ".read": false,
+      ".write": false
+    },
+    "activities": {
+      ".read": false,
+      ".write": false
+    },
     "users": {
       ".read": true,
       ".write": true
