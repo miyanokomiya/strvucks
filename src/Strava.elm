@@ -8,8 +8,8 @@ clientId =
 
 redirectUri : String
 redirectUri =
-    -- "https://strvucks.cloudfunctions.net/oauth_success"
-    "http://localhost:5000/strvucks/us-central1/server/oauth_success"
+    "https://us-central1-strvucks.cloudfunctions.net/server/oauth_success"
+    -- "http://localhost:5000/strvucks/us-central1/server/oauth_success"
 
 
 oauthUrl : String

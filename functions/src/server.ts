@@ -4,10 +4,10 @@ import * as admin from 'firebase-admin'
 import axios from 'axios'
 import bodyParser from 'body-parser'
 import { TokenData, WebhookData } from './types'
+import serviceAccount from './service-account'
 
 admin.initializeApp({
-  // export GOOGLE_APPLICATION_CREDENTIALS=[full-path-to-service.json]
-  credential: admin.credential.applicationDefault(),
+  credential: admin.credential.cert(serviceAccount as any),
   databaseURL: 'https://strvucks.firebaseio.com'
 })
 
@@ -19,7 +19,7 @@ const auth = admin.auth()
 const webHost =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:1234'
-    : 'https://strvucks.firebaseapp.com'
+    : 'https://strvucks.web.app'
 
 const getTokenData = async (code: string): Promise<TokenData> => {
   const paramSnap = await db.ref('env/oauth').once('value')

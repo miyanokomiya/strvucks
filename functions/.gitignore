@@ -5,4 +5,4 @@ lib
 typings/
 
 node_modules/
-*firebase-adminsdk*
+*service-account*
